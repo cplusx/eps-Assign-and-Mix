@@ -12,7 +12,7 @@ from tqdm import tqdm
 import os
 import numpy as np
 
-import net_ada_assignment_v2 as net
+import epsAM as net
 from sampler import InfiniteSamplerWrapper
 import glob
 
