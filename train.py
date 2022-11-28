@@ -61,9 +61,9 @@ def adjust_learning_rate(optimizer, iteration_count):
 parser = argparse.ArgumentParser()
 # Basic options
 parser.add_argument('--content_dir', type=str,
-                    default='/nas/home/chengjia/Dataset/cocostuff/dataset/images/train2017')
+                    default='Dataset/cocostuff/images/train2017')
 parser.add_argument('--style_dir', type=str,
-                    default='/nas/home/chengjia/Dataset/PBN/train')
+                    default='Dataset/PBN/train')
 parser.add_argument('--vgg', type=str, default='models/vgg_normalised.pth')
 
 # training options
@@ -85,13 +85,12 @@ parser.add_argument('--from_pretrained', type=int, default=1)
 parser.add_argument('--train_encoder', type=int, default=1)
 parser.add_argument('--metric_learning', type=int, default=0)
 parser.add_argument('--eps', type=float, default=1e-2)
-parser.add_argument('--alpha_pred_version', type=int, default=7)
 args = parser.parse_args()
 
 device = torch.device('cuda')
 if args.eps <= 0:
     args.eps = 'diversify'
-expt_id = f'AdaAssignV2-PT_{args.from_pretrained}-ENC_{args.train_encoder}-ML_{args.metric_learning}-EPS_{args.eps}-AP_{args.alpha_pred_version}'
+expt_id = f'epsAM-PT_{args.from_pretrained}-ENC_{args.train_encoder}-ML_{args.metric_learning}-EPS_{args.eps}'
 save_dir = os.path.join(args.save_dir, expt_id)
 save_dir = Path(save_dir)
 save_dir.mkdir(exist_ok=True, parents=True)
@@ -113,7 +112,7 @@ vgg = nn.Sequential(*list(vgg.children())[:31])
 if args.from_pretrained:
     decoder.load_state_dict(torch.load('models/decoder.pth'))
 
-network = net.Net(vgg, decoder, encoder_trainable, metric_learning, args.eps, alpha_pred_version=args.alpha_pred_version)
+network = net.Net(vgg, decoder, encoder_trainable, metric_learning, args.eps)
 network.train()
 network.to(device)
 
