@@ -41,6 +41,8 @@ unzip test.zip
 ### Sampling
 See [epsAM_demo.ipynb](epsAM_demo.ipynb)
 
+![qualitative](figures/qualitative1.png)
+
 ---
 
 ### Train
